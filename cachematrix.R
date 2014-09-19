@@ -7,8 +7,8 @@
 makeCacheMatrix <- function(theMat = matrix()) {
   
   inverseMatrix <- NULL
-  set <- function(y) {
-    theMat <<- y
+  set <- function(newMat) {
+    theMat <<- newMat
     inverseMatrix <<- NULL
   }
   get <- function() theMat
@@ -25,18 +25,18 @@ makeCacheMatrix <- function(theMat = matrix()) {
 ## is not already stored, then calculate it using the "solve" function, then
 ## store the result, and return it.
 
-cacheSolve <- function(x, ...) {
+cacheSolve <- function(mcm, ...) {
 
-  inverseMatrix <- x$getinv()
+  inverseMatrix <- mcm$getinv()
   if(!is.null(inverseMatrix)) {
     message("getting cached data")
     return(inverseMatrix)
   }
   else{
-    matrix <- x$get()                        #get the current value of x (the original matrix) and store it
+    matrix <- mcm$get()                        #get the current value of x (the original matrix) and store it
     inverseMatrix <- solve(matrix, ...)      #solve the matrix
     message("setting cached data")
-    x$setinv(inverseMatrix)                  #set the cached inverse version of the matrix
+    mcm$setinv(inverseMatrix)                  #set the cached inverse version of the matrix
     return (inverseMatrix)                   #return the inverted matrix
   }
   
